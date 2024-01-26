@@ -25,10 +25,22 @@ fn process_text(text: String) -> String {
     let citation_pattern = Regex::new(r#"\[\^?\d+\]"#).unwrap();
     let text = citation_pattern.replace_all(&text, "");
 
+    let edited_pattern = Regex::new(r#"\(edited\)"#).unwrap();
+    let text = edited_pattern.replace_all(&text, "");
+
+    let outliner_blockquote_pattern = Regex::new(r#"- > "#).unwrap();
+    let text = outliner_blockquote_pattern.replace_all(&text, "- ");
+
+    let blockquote_pattern = Regex::new(r#"^> "#).unwrap();
+    let text = blockquote_pattern.replace_all(&text, "- ");
+
     format!(
         r#"<speak><prosody rate="x-fast"><p>{}</p></prosody></speak>"#,
         text.replace('"', " (quote) ")
+            .replace('“', " (quote) ")
+            .replace('”', " (quote) ")
             .replace('&', "&amp;")
+            .replace('’', "&apos;")
             .replace('\'', "&apos;")
             .replace('<', "&lt;")
             .replace('>', "&gt;")
