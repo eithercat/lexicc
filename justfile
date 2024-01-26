@@ -1,7 +1,7 @@
 set dotenv-load
 set export
 
-cargo := "~/.cargo/bin/cargo"
+cargo := "$CARGO_HOME/bin/cargo"
 
 list:
     @just --list
